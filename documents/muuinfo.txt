@@ -1,0 +1,50 @@
+
+C:\Users\Tarmo>docker login --username=<username>
+Password:
+Login Succeeded
+
+C:\Users\Tarmo>docker images
+REPOSITORY                    TAG           IMAGE ID       CREATED             SIZE
+sectors-sectors-ui            latest        2c121743ea45   19 minutes ago      980MB
+sectors-sectors-api           latest        263fbb8fb22e   About an hour ago   529MB
+postgres                      14.1-alpine   1149d285a5f5   23 months ago       209MB
+
+C:\Users\Tarmo>docker tag 263fbb8fb22e tka1969/sectors-sectors-api:firsttry
+C:\Users\Tarmo>docker push tka1969/sectors-sectors-api:firsttry
+
+docker tag 2c121743ea45 tka1969/sectors-sectors-ui:firsttry
+C:\Users\Tarmo>docker push tka1969/sectors-sectors-ui:firsttry
+
+
+
+
+Kui vaja jõuga asi ära teha:
+Kustutame ja remoovi ka Desctop Docker -> Images
+D:\Develop\CV-Test\DigiVikings\sectors>docker-compose rm
+? Going to remove sectors-ui, sectors-app, sectors-postgres Yes
+[+] Removing 3/0
+ ✔ Container sectors-app       Removed                                                                                                                                      0.1s
+ ✔ Container sectors-ui        Removed                                                                                                                                      0.1s
+ ✔ Container sectors-postgres  Removed
+
+Ehitame, läheb käima
+D:\Develop\CV-Test\DigiVikings\sectors>docker-compose up --build --force-recreate
+
+ 
+ 
+ Kui vaja lahti saada kaasa jõlkuvast läbust (nt vaja teha puhas dockeri pull)
+ docker system prune -> vasta y, kui küsib kas tahad teha.
+ 
+ läheb ka selline osa:
+ Deleted Networks:
+kanban-board_default
+sectors_default
+composer_default
+myNetwork
+
+ 
+docker builder prune
+
+
+ 
+

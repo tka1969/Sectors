@@ -1,0 +1,27 @@
+
+<app-admin-menu></app-admin-menu>
+
+<div class="titlebar">
+    <h1 class="titlebar-text"><strong>SELECT SECTORS</strong></h1>
+    <alert-panel style="width: calc(100% - 250px)"></alert-panel>
+</div>
+
+<div>
+    <mat-card-actions class="button-container-left" align="end">
+        <button mat-raised-button mat-primary color="primary" style="margin-right:8px;" [disabled]="isUpdateDisabled" (click)="doAction({action: getAction('UPDATE'), payload: userData})">Update Selection</button>
+        <button mat-flat-button color="warn" style="margin-right:8px;" (click)="closeForm()">Close</button>
+    </mat-card-actions>
+    <span class="divider"></span>
+</div>
+  
+<widget-data-table 
+    [tableData]="sectorChoices"
+    [tableColumns]="sectorTableColumns"
+    [tableActions]="sectorTableActions"
+    [isPageable]="true"
+
+    (tableActionEvent)="sectorTableAction($event)"
+    (rowActionEvent)="sectorRowAction($event)"
+    >
+</widget-data-table>
+

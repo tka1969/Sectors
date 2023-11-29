@@ -1,0 +1,8 @@
+<form class="dynamic-form" [formGroup]="mainForm" (submit)="onSubmit($event)">
+    <div class="data-form-item-100 editproduct">
+        <div class="example-form-fields" *ngFor="let formGroup of dynamicForm.formGroups;">
+            <ng-container *ngFor="let field of formGroup.controls;" dynamicField [field]="field" [group]="mainForm">
+            </ng-container>
+        </div>
+    </div>
+  </form>

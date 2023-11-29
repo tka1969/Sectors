@@ -1,0 +1,44 @@
+<app-admin-menu></app-admin-menu>
+
+<div class="titlebar">
+    <h1 class="titlebar-text"><strong>USER SECTORS</strong></h1>
+    <alert-panel style="width: calc(100% - 250px)"></alert-panel>
+</div>
+
+<div>
+    <mat-card-actions class="button-container-left" align="end">
+        <button mat-raised-button mat-primary color="primary" style="margin-right:8px;" [disabled]="isUpdateDisabled" (click)="doAction({action: getAction('UPDATE'), payload: userData})">Update</button>
+        <button *ngIf="!isNew" mat-raised-button mat-primary color="primary" style="margin-right:8px;" [disabled]="isDisabled" (click)="doAction({action: getAction('REMOVE'), payload: userData})">Remove</button>
+        <button mat-flat-button color="warn" style="margin-right:8px;" (click)="closeForm()">Close</button>
+    </mat-card-actions>
+    <span class="divider"></span>
+</div>
+
+<div>
+    <dynamic-form [dynamicForm]="dynamicForm" [formData]="userData"></dynamic-form>
+</div>
+
+
+<ng-container *ngIf="(service.isError())">
+    <span> Error - {{service.getError()}}</span>
+</ng-container>
+  
+<mat-progress-spinner
+    *ngIf="service.isLoading()"
+    mode="indeterminate"
+    color="primary"
+    >
+</mat-progress-spinner>
+  
+<widget-data-table 
+    *ngIf="!isNew && service.isLoaded()"
+    [tableData]="listSectors"
+    [tableColumns]="sectorTableColumns"
+    [tableActions]="sectorTableActions"
+    [isPageable]="true"
+
+    (tableActionEvent)="sectorTableAction($event)"
+    (rowActionEvent)="sectorRowAction($event)"
+    >
+</widget-data-table>
+

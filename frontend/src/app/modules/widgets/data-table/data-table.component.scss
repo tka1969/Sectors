@@ -1,0 +1,46 @@
+
+
+table {
+    width: 100%;
+  }
+  
+  th, td {
+    padding: 5px !important;
+  }
+  
+  .text-right {
+    text-align: right !important;
+  }
+
+
+  .data-table-icon {
+    padding: 0 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* Row hover bakground */
+.mat-row:hover .mat-cell {
+  background-color: #fff5a2;
+}
+
+th.mat-header-cell {
+  background: rgba(239,247,251,0.91) !important;
+  cursor: pointer;
+}
+
+tr.mat-header-row {
+  border-top: 1px solid #48484830;
+  background: rgba(247, 251, 253, 0.897) !important;
+}
+
+tr.mat-row {
+  border-bottom: 1px solid #48484830;
+  cursor: pointer;
+}
+
+
+

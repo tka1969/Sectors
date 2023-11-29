@@ -1,0 +1,127 @@
+<ng-container>
+
+    <mat-card-actions class="button-container-left" align="end">
+      <button
+          mat-raised-button mat-primary
+          color="primary" 
+          *ngFor="let tblAction of tableActions"
+          style="margin-right:8px;"
+          [disabled]="isDisabled(tblAction)"
+          (click)="tableActionEvent.emit({action: tblAction, payload: {}})">
+              {{tblAction.name}}
+      </button>
+    </mat-card-actions>
+
+    <div class="example-form-fields" *ngIf="isFilterable" >
+      <span class="divider"></span>
+      <div class="form-group1 " *ngFor="let filter of dataColumns">
+        <div class="data-form-item-25" *ngIf="filter.isFilter">
+          <mat-label class="data-form-item-100 example-form-field">{{filter.label}} Filter</mat-label>
+          <mat-form-field class="data-form-item-100 example-form-field" appearance="outline">
+              <input matInput class="data-form-item-100 custom-field" name="table-filter-{{filter.dataKey}}" placeholder="enter filter" (keyup)="filterChange(filter, $event)" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <table mat-table [dataSource]="tableDataSource" matSort #empTbSort="matSort" (matSortChange)="sortTable($event)">
+      <ng-container *ngFor="let tableColumn of dataColumns" [matColumnDef]="tableColumn.label">
+        <!-- if sortable column header -->
+        <ng-container *ngIf="tableColumn.isSortable; else notSortable">
+          <th mat-header-cell *matHeaderCellDef [style.width]=tableColumn.width [mat-sort-header]="tableColumn.label"
+              [arrowPosition]="tableColumn.position === 'right' ? 'before' : 'after'"
+              >
+            {{tableColumn.label}}
+          </th>
+        </ng-container>
+        <!-- else not sortable -->
+        <ng-template #notSortable>
+          <th mat-header-cell *matHeaderCellDef [style.width]=tableColumn.width [class.text-right]="tableColumn.position == 'right'">
+            {{tableColumn.label}}
+          </th>
+        </ng-template>
+  
+        <!-- column data -->
+        <td mat-cell class="mat-cell" *matCellDef="let element" [class.text-right]="tableColumn.position == 'right'" >
+          
+          <div [ngSwitch]="tableColumn.type">
+            <div *ngSwitchCase = tableColumnType.ACTION>
+              <div class="button-row-container-left">
+
+
+                <div *ngFor="let rowAction of tableColumn.actions">
+                  <div [ngSwitch]="rowAction.type">
+
+                    <div *ngSwitchCase = "tableActionType.ICON">
+                      <a class="data-table-icon"  (click)="rowActionEvent.emit({action: rowAction, payload: element})">
+                        <fa-icon class="data-table-icon" style="font-size: 16px" [icon]="rowAction.icon"></fa-icon>
+                      </a>
+                    </div>
+                    <div *ngSwitchCase = "tableActionType.LINK">
+
+                    </div>
+                    <div *ngSwitchDefault>
+
+                      <div *ngIf="rowAction.name === ''; else rowActionName">
+                        <button
+                          mat-raised-button mat-primary
+                          color="primary" 
+                          [disabled]="isDisabled(rowAction)"
+                          (click)="rowActionEvent.emit({action: rowAction, payload: element})">
+                            {{element | dataPropertyGetter: tableColumn}}
+                        </button>
+                      </div>
+
+                        <ng-template #rowActionName>
+                          <button
+                            mat-raised-button mat-primary
+                            color="primary" 
+                            [disabled]="isDisabled(rowAction)"
+                            (click)="rowActionEvent.emit({action: rowAction, payload: element})">
+                              {{rowAction.name}}
+                          </button>
+                        </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngSwitchCase = tableColumnType.CHECKBOX>
+              <mat-checkbox (click)="$event.stopPropagation();"
+                (change)="$event ? selectionToggle(tableColumn, element) : null"
+                [checked]="isSelected(tableColumn, element)"
+                >
+              </mat-checkbox>
+            </div>
+            <div *ngSwitchDefault (click)="rowActionEvent.emit({action: rowClick, payload: element})">{{element | dataPropertyGetter: tableColumn}}</div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr class="mat-header-row" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row class="mat-row" *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="9999">
+          No records found.
+        </td>
+      </tr>
+    </table>
+  
+    <mat-paginator
+        [hidden]="tableDataSource.data.length == 0"
+        *ngIf="isPageable"
+        [length]="tableDataSource.data.length"
+        (page)="getPaginatorData($event)"
+        [pageSizeOptions]="paginationSizes"
+        [pageSize]="defaultPageSize"
+        showFirstLastButtons>
+    </mat-paginator>
+
+    <div *ngIf="isPageable && tableDataSource && tableDataSource.data.length > 0">
+      <span class="divider"></span>
+    </div>
+
+  </ng-container>
+

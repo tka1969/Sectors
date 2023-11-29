@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  #PostgreSQL Database for the application
+  sectors-postgres:
+    image: postgres:14.1-alpine
+    container_name: sectors-postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=sectors
+      - POSTGRES_PASSWORD=sectors
+      - POSTGRES_DB=sectors
+    #Volume mounted for database for the storage
+    volumes:
+      - ./dataset/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - sectors-data:/var/lib/postgresql-140/data-140
+    ports:
+      - "5432:5432"
+
+  #Back-end Spring Boot Application
+  sectors-api:
+    #The docker file in sectors-app build the jar and provides the docker image with the following name.
+    build: ./backend
+    container_name: sectors-app
+
+    #Environment variables for Spring Boot Application.
+    environment:
+      - DB_SERVER=sectors-postgres
+      - POSTGRES_DB=sectors
+      - POSTGRES_USER=sectors
+      - POSTGRES_PASSWORD=sectors
+    ports:
+      - 8080:8080 # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    depends_on:
+      - sectors-postgres      
+    links:
+      - sectors-postgres
+
+
+  #Fron-end Angular Application
+  sectors-ui:
+    build: ./frontend
+    container_name: sectors-ui
+    ports:
+      - 4200:4200
+    links:
+      - sectors-api
+    depends_on:
+      - sectors-api      
+
+#Volumes for DB data
+volumes:
+  sectors-data:
+  

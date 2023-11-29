@@ -1,0 +1,30 @@
+
+<app-admin-menu></app-admin-menu>
+
+<div class="titlebar">
+    <h1 class="titlebar-text"><strong>USER SECTORS</strong></h1>
+</div>
+
+<ng-container *ngIf="(service.isError())">
+    <span> Error - {{service.getError()}}</span>
+</ng-container>
+  
+<mat-progress-spinner
+    *ngIf="service.isLoading()"
+    mode="indeterminate"
+    color="primary"
+    >
+</mat-progress-spinner>
+  
+<widget-data-table 
+    *ngIf="service.isLoaded()"
+    [tableData]="service.getResources()"
+    [tableColumns]="userTableColumns"
+    [tableActions]="userTableActions"
+    [isPageable]="true"
+
+    (tableActionEvent)="userTableAction($event)"
+    (rowActionEvent)="userRowAction($event)"
+    >
+</widget-data-table>
+

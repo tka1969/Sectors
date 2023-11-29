@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14.444" viewBox="0 0 20 14.444">
+    <defs>
+        <style>
+            .cls-3{stroke:none}
+        </style>
+    </defs>
+    <g id="icon_mail">
+        <g id="Rectangle_191" fill="none" stroke="#22252a" stroke-width="2px">
+            <path d="M0 0H20V14.444H0z" class="cls-3"/>
+            <path d="M1 1H19V13.444H1z"/>
+        </g>
+        <g id="Polygon_3" fill="#f1f2f4">
+            <path d="M17.586 9H2.414L10 1.414 17.586 9z" class="cls-3" transform="rotate(180 10 5)"/>
+            <path fill="#22252a" d="M10 2.828L4.828 8h10.344L10 2.828M10 0l10 10H0L10 0z" transform="rotate(180 10 5)"/>
+        </g>
+    </g>
+</svg>
